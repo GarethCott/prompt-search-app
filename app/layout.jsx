@@ -1,12 +1,12 @@
-import '@styles/global.css';
-import { Children } from 'react';
+import '@styles/globals.css';
+import { children } from 'react';
 
 export const metadata = {
     title: "promtsearch",
     description: "Discover & Share AI Promts"
 }
 
-const RootLayout = () => {
+const RootLayout = ({children}) => {
   return (
     <html Lang="en">
         <body>
@@ -14,7 +14,7 @@ const RootLayout = () => {
                 <div className="gradient"/>
             </div>
             <main className="app">
-                {Children}
+                {children}
             </main>
         </body>
     </html>
