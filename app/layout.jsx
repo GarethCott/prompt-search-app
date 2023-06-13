@@ -2,7 +2,7 @@ import '@styles/globals.css';
 import { children } from 'react';
 
 export const metadata = {
-    title: "promtsearch",
+    title: "PromptSearch",
     description: "Discover & Share AI Promts"
 }
 
