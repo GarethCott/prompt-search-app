@@ -1,5 +1,7 @@
 import '@styles/globals.css';
-import { children } from 'react';
+import Nav from '@components/Nav';
+import Provider from '@components/Provider';
+
 
 export const metadata = {
     title: "PromptSearch",
@@ -14,6 +16,7 @@ const RootLayout = ({children}) => {
                 <div className="gradient"/>
             </div>
             <main className="app">
+                <Nav />
                 {children}
             </main>
         </body>

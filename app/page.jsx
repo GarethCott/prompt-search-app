@@ -1,3 +1,5 @@
+import Feed from "@components/Feed"
+
 
 const Home = () => {
   return (
@@ -10,7 +12,7 @@ const Home = () => {
         <p className="desc text-center">
             PromptSearch is an prompting tool to create and share prompts
         </p>
-        {/*Feed*/}
+        <Feed />
     </section>
   )
 }
