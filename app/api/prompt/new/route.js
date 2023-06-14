@@ -2,21 +2,29 @@ import { connectToDB } from "@utils/database";
 import Prompt from "@models/prompt";
 
 export const POST = async (req, res) => {
-    const { userId, prompt, tag } = await req.json();
+    const { userId, prompt, tag } = await request.json();
 
     try {
         await connectToDB();
+        const prompts = await Prompt.find().populate({
+          path: "creator"
+        });
 
-        const newPrompt = new Prompt({
-            creator: userId,
-            prompt,
-            tag,
-        })
+        const response = new Response(JSON.stringify(prompts), {
+          status: 200,
+        });
 
-        await newPrompt.save();
+        // Add a unique identifier to the URL to force a cache-busting reload
+        const url = new URL(req.url);
+        url.searchParams.set("t", Date.now());
+        response.headers.set("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.headers.set("Pragma", "no-cache");
+        response.headers.set("Expires", "0");
+        response.headers.set("Location", url.toString());
 
-        return new Response(JSON.stringify(newPrompt), {status: 201})
+        return response;
     } catch (error) {
-        return new Response("Failed to create a new prompt", {status: 500})
+        return new Response("Failed to fetch all prompts", { status: 500 })
     }
+   
 }
