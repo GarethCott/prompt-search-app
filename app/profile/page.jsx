@@ -24,6 +24,7 @@ const MyProfile = () => {
   }, [session?.user.id]);
 
   const handleEdit = (post) => {
+    
   };
 
   const handleDelete = async (post) => {
