@@ -1,12 +1,11 @@
 "use client";
-
+import React from "react";
 import { useState, useEffect } from "react";
-
 import PromptCard from "./PromptCard";
 
 const PromptCardList = ({ data, handleTagClick }) => {
   return (
-    <div className='mt-16 prompt_layout'>
+    <div className="mt-16 prompt_layout " style={{ columns: 2 }}>
       {data.map((post) => (
         <PromptCard
           key={post._id}
@@ -19,18 +18,16 @@ const PromptCardList = ({ data, handleTagClick }) => {
 };
 
 const Feed = () => {
-  const [allPosts, setAllPosts] = useState([]);
-
   // Search states
   const [searchText, setSearchText] = useState("");
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   const fetchPosts = async () => {
-    const response = await fetch("/api/prompt");
-    const data = await response.json();
-
-    setAllPosts(data);
+    const res = await fetch("/api/prompt", { cache: "no-store" });
+    const data = await res.json();
+    setPosts(data);
   };
 
   useEffect(() => {
@@ -39,7 +36,7 @@ const Feed = () => {
 
   const filterPrompts = (searchtext) => {
     const regex = new RegExp(searchtext, "i"); // 'i' flag for case-insensitive search
-    return allPosts.filter(
+    return posts.filter(
       (item) =>
         regex.test(item.creator.username) ||
         regex.test(item.tag) ||
@@ -59,7 +56,6 @@ const Feed = () => {
       }, 500)
     );
   };
-
   const handleTagClick = (tagName) => {
     setSearchText(tagName);
 
@@ -68,26 +64,24 @@ const Feed = () => {
   };
 
   return (
-    <section className='feed'>
-      <form className='relative w-full flex-center'>
+    <section className="feed">
+      <form className="relative w-full flex justify-center items-center">
         <input
-          type='text'
-          placeholder='Search for a tag or a username'
+          type="text"
+          placeholder="search for a tag or a username"
           value={searchText}
-          onChange={handleSearchChange}
           required
-          className='search_input peer'
+          className="search_input peer"
+          onChange={handleSearchChange}
         />
       </form>
-
-      {/* All Prompts */}
       {searchText ? (
         <PromptCardList
           data={searchedResults}
           handleTagClick={handleTagClick}
         />
       ) : (
-        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
+        <PromptCardList data={posts} handleTagClick={handleTagClick} />
       )}
     </section>
   );
