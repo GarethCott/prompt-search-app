@@ -14,7 +14,7 @@ export const GET = async (request, {params}) => {
             headers: {
             referer: referer,
             'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
-          },})
+          }})
 
         return new Response(JSON.stringify(prompt), {status: 200})
     } catch (error) {
@@ -24,6 +24,8 @@ export const GET = async (request, {params}) => {
 
 export const PATCH = async (request, {params}) => {
     const {prompt, tag} =await request.json();
+    const headersList = headers();
+    const referer = headersList.get('referer');
 
     try {
         await connectToDB();
@@ -36,7 +38,10 @@ export const PATCH = async (request, {params}) => {
         existingPrompt.tag = tag;
 
         await existingPrompt.save();
-        return new Response(JSON.stringify(existingPrompt), {status: 200})
+        return new Response(JSON.stringify(existingPrompt), {status: 200, headers: {
+            referer: referer,
+            'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
+          }})
 
     } catch (error) {
         return new Response("Failed to update response", {status: 500})
